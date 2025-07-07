@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+<div class="form-container">
+    <h2>Submit Your Resume</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+
+        <div class="form-group">
+            {{ form.resume_file.label }}
+            {{ form.resume_file(class_="form-control") }}
+        </div>
+
+        <div class="form-group">
+            {{ form.resume_text.label }}
+            {{ form.resume_text(class_="form-control", rows="5", placeholder="Or type your resume here...") }}
+        </div>
+
+        <div class="form-group">
+            {{ form.submit(class_="btn-submit") }}
+        </div>
+    </form>
+</div>
+{% endblock %}

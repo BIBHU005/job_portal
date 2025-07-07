@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<!-- Fullscreen Hero Section (video background) -->
+<section class="hero-section">
+    <video autoplay muted loop playsinline id="bg-video">
+        <source src="{{ url_for('static', filename='media/background.mp4') }}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <div class="overlay-content">
+        <h1 data-aos="fade-up" data-aos-duration="1000">Welcome to <span style="color:#1abc9c;">JobNest</span></h1>
+        <p data-aos="fade-up" data-aos-delay="300">Where dreams meet opportunities.</p>
+
+        <div class="role-buttons" data-aos="zoom-in" data-aos-delay="600">
+            <a href="{{ url_for('jobs') }}">
+                <button class="btn-role">I'm a Job Seeker</button>
+            </a>
+            <a href="{{ url_for('login') }}">
+                <button class="btn-role">I'm a Recruiter</button>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section class="about-section">
+    <div class="about-content">
+        <h2>About JobNest</h2>
+        <p>
+            <strong>JobNest</strong> is a modern recruitment platform designed to connect ambitious job seekers with leading companies. 
+            Whether you're launching your career or taking the next step, our tools help you find the right fit quickly and easily.
+        </p>
+        <p>
+            We empower individuals and organizations through smart matching, transparency, and trust. 
+            Join JobNest and discover opportunities that align with your passion and potential.
+        </p>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section">
+    <h2>Why Choose JobNest?</h2>
+    <div class="features-grid">
+        <div class="feature-box">
+            <i class="fa fa-briefcase"></i>
+            <h3>Verified Jobs</h3>
+            <p>All job listings are screened and verified for legitimacy.</p>
+        </div>
+        <div class="feature-box">
+            <i class="fa fa-bolt"></i>
+            <h3>Instant Apply</h3>
+            <p>Apply to jobs in seconds with a single click.</p>
+        </div>
+        <div class="feature-box">
+            <i class="fa fa-users"></i>
+            <h3>Top Employers</h3>
+            <p>We partner with leading companies actively hiring talent.</p>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+<div class="login-background">
+    <div class="form-wrapper">
+        <h2>Welcome Back</h2>
+        <p class="subtitle">Login to your JobNest account</p>
+        
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            
+            <div class="form-group">
+                {{ form.email.label }}<br>
+                {{ form.email(class="form-control", placeholder="Email") }}
+            </div>
+            
+            <div class="form-group">
+                {{ form.password.label }}<br>
+                {{ form.password(class="form-control", placeholder="Password") }}
+            </div>
+            
+            <div class="form-group remember">
+                {{ form.remember() }} {{ form.remember.label }}
+            </div>
+            
+            <div class="form-group">
+                {{ form.submit(class="btn-submit") }}
+            </div>
+        </form>
+
+        <div class="divider">or login with</div>
+
+        <div class="social-buttons">
+            <button class="social-btn google">Google</button>
+        </div>
+
+        <p class="signup-link">Don't have an account? <a href="{{ url_for('signup') }}">Sign up</a></p>
+    </div>
+</div>
+{% endblock %}

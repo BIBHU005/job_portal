@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Job Applications Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #334155;
+        }
+        
+        .dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.02)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.02)"/><circle cx="50" cy="10" r="0.5" fill="rgba(255,255,255,0.03)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+        
+        .header h1 {
+            color: white;
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header p {
+            color: #cbd5e1;
+            font-size: 1.1em;
+            font-weight: 400;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0;
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .stat-card {
+            padding: 32px 24px;
+            text-align: center;
+            border-right: 1px solid #e2e8f0;
+            background: white;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        
+        .stat-card:last-child {
+            border-right: none;
+        }
+        
+        .stat-card:hover {
+            background: #f8fafc;
+        }
+        
+        .stat-number {
+            font-size: 2.25em;
+            font-weight: 700;
+            color: #1e293b;
+            display: block;
+            line-height: 1;
+        }
+        
+        .stat-label {
+            color: #64748b;
+            font-size: 0.875em;
+            margin-top: 8px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .table-container {
+            padding: 0;
+            overflow-x: auto;
+            background: white;
+        }
+        
+        .applications-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+        
+        .applications-table th {
+            background: #f8fafc;
+            color: #475569;
+            padding: 20px 24px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.875em;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .applications-table td {
+            padding: 20px 24px;
+            border-bottom: 1px solid #f1f5f9;
+            color: #334155;
+            line-height: 1.5;
+            font-size: 0.95em;
+        }
+        
+        .applications-table tr {
+            transition: all 0.15s ease;
+        }
+        
+        .applications-table tbody tr:hover {
+            background: #f8fafc;
+        }
+        
+        .job-title {
+            font-weight: 600;
+            color: #1e293b;
+            font-size: 1em;
+        }
+        
+        .applicant-name {
+            font-weight: 500;
+            color: #334155;
+        }
+        
+        .email {
+            color: #64748b;
+            font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+            font-size: 0.9em;
+        }
+        
+        .cover-letter {
+            max-width: 350px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: #64748b;
+            font-size: 0.9em;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875em;
+            font-weight: 500;
+            transition: all 0.15s ease;
+            text-decoration: none;
+            display: inline-block;
+            background: white;
+            color: #475569;
+        }
+        
+        .btn:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+            transform: translateY(-1px);
+        }
+        
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+        
+        .btn-primary:hover {
+            background: #2563eb;
+            border-color: #2563eb;
+        }
+        
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 0.75em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: 1px solid;
+        }
+        
+        .status-new {
+            background: #eff6ff;
+            color: #1d4ed8;
+            border-color: #bfdbfe;
+        }
+        
+        .status-reviewed {
+            background: #fefce8;
+            color: #a16207;
+            border-color: #fde047;
+        }
+        
+        .status-shortlisted {
+            background: #f0fdf4;
+            color: #166534;
+            border-color: #bbf7d0;
+        }
+        
+        .status-rejected {
+            background: #fef2f2;
+            color: #dc2626;
+            border-color: #fecaca;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 80px 40px;
+            color: #64748b;
+        }
+        
+        .empty-state h3 {
+            font-size: 1.5em;
+            color: #334155;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .empty-state p {
+            font-size: 1em;
+            line-height: 1.6;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2em; }
+            .header { padding: 30px 20px; }
+            .stats { grid-template-columns: 1fr 1fr; }
+            .stat-card { padding: 24px 16px; }
+            .applications-table th,
+            .applications-table td { 
+                padding: 16px 12px;
+                font-size: 0.875em;
+            }
+            .cover-letter { max-width: 200px; }
+            .action-buttons { 
+                flex-direction: column;
+                gap: 4px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .stats { grid-template-columns: 1fr; }
+            .dashboard { margin: 10px; }
+            body { padding: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="header">
+            <h1>Job Applications</h1>
+            <p>Manage and review candidate submissions</p>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-card">
+                <span class="stat-number">{{ applications|length }}</span>
+                <div class="stat-label">Total Applications</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">{{ applications|selectattr('status', 'equalto', 'reviewed')|list|length }}</span>
+                <div class="stat-label">Under Review</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">{{ applications|selectattr('status', 'equalto', 'shortlisted')|list|length }}</span>
+                <div class="stat-label">Shortlisted</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">{{ applications|map(attribute='job_title')|unique|list|length }}</span>
+                <div class="stat-label">Active Jobs</div>
+            </div>
+        </div>
+        
+        <div class="table-container">
+            {% if applications %}
+            <table class="applications-table">
+                <thead>
+                    <tr>
+                        <th>Job Title</th>
+                        <th>Applicant Name</th>
+                        <th>Email</th>
+                        <th>Cover Letter</th>
+                        <th>Status</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for app in applications %}
+                    <tr>
+                        <td class="job-title">{{ app.job_title }}</td>
+                        <td class="applicant-name">{{ app.applicant_name }}</td>
+                        <td class="email">{{ app.email }}</td>
+                        <td class="cover-letter">{{ app.cover_letter }}</td>
+                        <td>
+                            {% if app.status %}
+                                <span class="status-badge status-{{ app.status|lower }}">{{ app.status|title }}</span>
+                            {% else %}
+                                <span class="status-badge status-new">New</span>
+                            {% endif %}
+                        </td>
+                        
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="empty-state">
+                <h3>No Applications Yet</h3>
+                <p>Applications will appear here when candidates start applying for your job postings.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

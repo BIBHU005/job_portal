@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+<div class="container dashboard-container">
+    <br><br><br>
+    <div class="header dashboard-header">
+        <h1>JobNest Management Dashboard</h1>
+        <p>Monitor your recruiting performance and manage job listings effectively.</p>
+    </div>
+
+    <div class="stats-banner">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h3>{{ total_applications }}</h3>
+                <p>Active Applications</p>
+            </div>
+            <div class="stat-item">
+                <h3>{{ open_positions }}</h3>
+                <p>Open Positions</p>
+            </div>
+            <div class="stat-item">
+                <h3>{{ success_rate }}%</h3>
+                <p>Success Rate</p>
+            </div>
+            <div class="stat-item">
+                <h3>{{ avg_days_to_hire }}</h3>
+                <p>Avg. Hiring Time</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-cards">
+        <div class="nav-card">
+            <h2>Application Management</h2>
+            <p>View and filter all candidate submissions and manage status updates efficiently.</p>
+            <a href="{{ url_for('uploadedresumes') }}">Go to Applications →</a>
+        </div>
+
+        <div class="nav-card">
+            <h2>Post a Job</h2>
+            <p>Add new job listings and reach thousands of job seekers with a single click.</p>
+            <a href="{{ url_for('add_job') }}">Add Job →</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

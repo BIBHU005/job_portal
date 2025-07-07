@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+<div class="form-container">
+    <h2>Apply for a Job</h2>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+
+        <div class="form-group">
+            {{ form.name.label }}<br>
+            {{ form.name(class="form-control", placeholder="Full Name") }}
+        </div>
+
+        <div class="form-group">
+            {{ form.email.label }}<br>
+            {{ form.email(class="form-control", placeholder="Email") }}
+        </div>
+
+        
+
+        <div class="form-group">
+            {{ form.cover_letter.label }}<br>
+            {{ form.cover_letter(class="form-control", rows=4, placeholder="Write your cover letter...") }}
+        </div>
+
+        <div class="form-group">
+            {{ form.submit(class="btn-submit") }}
+        </div>
+    </form>
+</div>
+{% endblock %}

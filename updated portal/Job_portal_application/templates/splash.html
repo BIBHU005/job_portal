@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta http-equiv="refresh" content="3;url={{ url_for('home') }}">
+</head>
+<body>
+    <div class="splash-container">
+        <img src="{{ url_for('static', filename='logo2.jpeg') }}" alt="Company Logo" class="splash-logo">
+    </div>
+</body>
+</html>
